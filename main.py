@@ -7,7 +7,6 @@ from llama_index.core.postprocessor import SimilarityPostprocessor
 from llama_index.core.node_parser import SentenceSplitter
 import ollama
 from llama_index.core import StorageContext
-from IPython.display import Markdown, display
 import chromadb
 
 Settings.llm=None
