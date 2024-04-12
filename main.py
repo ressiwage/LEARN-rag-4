@@ -1,32 +1,24 @@
-from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, Settings, load_index_from_storage, get_response_synthesizer
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, Settings, get_response_synthesizer
 from llama_index.vector_stores.chroma import ChromaVectorStore
-from llama_index.core.embeddings import resolve_embed_model
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-from llama_index.llms.huggingface import HuggingFaceLLM
-from llama_index.readers.chroma import ChromaReader
 from llama_index.core.retrievers import VectorIndexRetriever
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.postprocessor import SimilarityPostprocessor
 from llama_index.core.node_parser import SentenceSplitter
-
-import ollama, os
-from llama_index.core import StorageContext, PromptTemplate
-import torch
+import ollama
+from llama_index.core import StorageContext
 from IPython.display import Markdown, display
 import chromadb
 
+Settings.llm=None
 
+parser = SentenceSplitter()
 
 embed_model =  HuggingFaceEmbedding(model_name="cointegrated/rubert-tiny2")
-# Settings.text_splitter = SentenceSplitter(chunk_size=1024, chunk_overlap=20)
 
-Settings.llm=None
-# create client and a new collection
 chroma_client = chromadb.EphemeralClient()
 chroma_collection = chroma_client.create_collection("quickstart")
 
-parser = SentenceSplitter()
-# load documents
 documents = SimpleDirectoryReader("./data/").load_data()
 nodes = parser.get_nodes_from_documents(documents)
 
